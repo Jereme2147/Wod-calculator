@@ -13,10 +13,8 @@ function wodLength(days){
         lengths.push(Math.floor((Math.random() * 100) + 1)); /* random numbers for each dayt */ 
     }
     numberOfDays = days;
-    
     convertNumbersToLengths(lengths);
 } 
-
 
 function convertNumbersToLengths(lengths){
     for (var i = 0; i < lengths.length; i++){
@@ -41,16 +39,13 @@ function convertNumbersToLengths(lengths){
             }
         }
        putDayNumbers();
-       
     }
 
 function putDayNumbers(){
     for (var i = 0; i < lengths.length; i++) {
         workOutOfTheDay.push({ 'day': i + 1 });
     }
-   
     putObject('time');
-
 }
     /* puts time frames into the array */
 function putObject(newInfo) {
@@ -60,8 +55,6 @@ function putObject(newInfo) {
     priority();
     printWods(workOutOfTheDay);
 }
-
-
 
 /* will run until amrap vs for time is within 10%  */
 function priority(){
@@ -112,20 +105,15 @@ function printWods(workout) {
         }
         rowID = buildNewRow(rowID);
     }
-    /*  document.getElementById("wodPrint").innerHTML += "<br><br>Percentage of AMRAPs: " + getPercentage(amrap);
-     document.getElementById("wodPrint").innerHTML += "<br><br>Percentage of Task: " + getPercentage(forTime);  */
 }
 
 function buildDayBlocks(newRowID){
     
         var blockDiv = document.createElement("div");
         blockDiv.id = "dayBlocks";
-     //   var blockDivText = document.createElement("p");
-     //   blockDiv.appendChild(blockDivText).innerHTML += "Test";
         var blockday = document.getElementById(newRowID);
         blockday.appendChild(blockDiv);
         return blockDiv;
-
 }
 
 function buildNewRow(oldRowID){
@@ -137,9 +125,4 @@ function buildNewRow(oldRowID){
     var RowPlace = document.getElementById("topRow");
     RowPlace.appendChild(newRow);
     return newRowID;
-    /* var blockDiv = document.createElement("div");
-    blockDiv.className ="row";
-    var blockday = document.getElementById("dayGrid");
-    blockday.appendChild(blockDiv); */
-
 }
