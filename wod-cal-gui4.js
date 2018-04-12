@@ -3,7 +3,7 @@ var lengths = [];   /* array for wod lengths */
 var workOutOfTheDay = []; /* array to hold the contents of the entire day */
 var amrap = 0;
 var forTime = 0;
-var lengths = [];   /* array for wod lengths */
+/* var lengths = [];   /* array for wod lengths */ 
 let numberOfDays = 0; 
 
 function wodLength(days){
@@ -58,15 +58,19 @@ function putObject(newInfo) {
 
 /* will run until amrap vs for time is within 10%  */
 function priority(){
-    do {
+    let ones = 0;
+    do{
+        ones = 0;
         for (var i = 0; i < lengths.length; i++){
           if ((Math.floor((Math.random() * 10)) % 2)){
              workOutOfTheDay[i]['priority'] = 'For Time';
+                ones++;
               }else {
                      workOutOfTheDay[i]['priority'] = 'AMRAP';
+                    
                 }
             }
-    } while(getPercentage(amrap) < 45 && getPercentage(amrap) > 55);
+        }while (!getPercentage(ones));
    
     countPriority();
 }
@@ -87,10 +91,16 @@ function countPriority(){
 }
 
 /* intended to return the percentage of a number in reference to the days  */
-function getPercentage(number1){
-    return Math.floor((( number1 / lengths.length) * 100 ));
-}
+function getPercentage(ones) {
+    let onesPercent = Math.floor(((ones / 20) * 100));
+    if (onesPercent > 45 && onesPercent < 55) {
+        console.log(onesPercent);
+        return true;
+    } else {
 
+        return false;
+    }
+}
 /* prints every wod.  If I add a field it must be added to the loop */
 function printWods(workout) {
     var rowID = 'dayGrid';
