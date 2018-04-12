@@ -96,7 +96,10 @@ function getPercentage(ones) {
     if (onesPercent > 45 && onesPercent < 55) {
         console.log(onesPercent);
         return true;
-    } else {
+    }else if(lengths.length < 10){
+        return true;
+    } 
+    else {
 
         return false;
     }
@@ -106,7 +109,10 @@ function printWods(workout) {
     var rowID = 'dayGrid';
     var i;
     for (i = 0; i < lengths.length; i++) {
-        for (var j = 0; j < 7; j++){
+        for (var j = 0; j < 7; j++){    // ********have to figure out how to stop this from running too many times. **
+        if(i + j > lengths.length){
+            continue;
+        }
         var blockDiv = buildDayBlocks(rowID);
         blockDiv.innerHTML += "Day: " + workout[i].day;
         blockDiv.innerHTML += "<br>Time frame: " + workout[i].time;
@@ -130,7 +136,7 @@ function buildNewRow(oldRowID){
     var newRowID = oldRowID + 'a';
     console.log(newRowID);
     var newRow = document.createElement("div");
-    newRow.className = "row";
+    newRow.className = "row container-fluid";
     newRow.id = newRowID;
     var RowPlace = document.getElementById("topRow");
     RowPlace.appendChild(newRow);
