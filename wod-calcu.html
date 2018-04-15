@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
             crossorigin="anonymous">
 
-        <script src = "wod-cal-gui4.js"></script>
+        
 		
 		<style>
             #title-bar{
@@ -40,10 +40,14 @@
             #topRow{
                 padding: 20px;
             }
+            #percentages{
+
+            }
 		</style>
 	</head>
 	<body id = "body">
         <!-- menu bar -->
+        
         <div id = "title-bar" class = "container-fluid"> </div>
 
         <div class = "row">
@@ -72,13 +76,20 @@
         <div class="col col-xs-2"></div>
 
         </div>
+        <div class = "row container-fluid"> 
+            <div class = "col col-xs-2" ></div>
+            <div class = "col col-lg-8">
+                <p id="percentages" ></p>
+            </div>
+            <div class = "col col-xs-2" ></div>
+        </div>
 
 
 
 
 
 
-
+<script src="wod-cal-gui4.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"

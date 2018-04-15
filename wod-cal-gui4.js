@@ -3,8 +3,9 @@ var lengths = [];   /* array for wod lengths */
 var workOutOfTheDay = []; /* array to hold the contents of the entire day */
 var amrap = 0;
 var forTime = 0;
-/* var lengths = [];   /* array for wod lengths */ 
+
 let numberOfDays = 0; 
+
 
 function wodLength(days){
     var day = document.getElementById('days').value;
@@ -72,29 +73,15 @@ function priority(){
             }
         }while (!getPercentage(ones));
    
-    countPriority();
+
 }
 
-function countPriority(){
-    var x = lengths.length;
-    
-    for (var i = 0; i < x; i ++){
-        switch (workOutOfTheDay[i]['priority']){
-            case 'For Time':
-                forTime ++;
-                break;
-            case 'AMRAP':
-                amrap ++;
-                break;
-        }
-    }
-}
+
 
 /* intended to return the percentage of a number in reference to the days  */
 function getPercentage(ones) {
-    let onesPercent = Math.floor(((ones / 20) * 100));
+    let onesPercent = findPercentage(ones);
     if (onesPercent > 45 && onesPercent < 55) {
-        console.log(onesPercent);
         return true;
     }else if(lengths.length < 10){
         return true;
@@ -111,6 +98,7 @@ function printWods(workout) {
     for (i = 0; i < lengths.length; i++) {
         for (var j = 0; j < 7; j++){    // ********have to figure out how to stop this from running too many times. **
         if(i + j > lengths.length){
+            printPercentages();
             continue;
         }
         var blockDiv = buildDayBlocks(rowID);
@@ -121,6 +109,7 @@ function printWods(workout) {
         }
         rowID = buildNewRow(rowID);
     }
+   
 }
 
 function buildDayBlocks(newRowID){
@@ -142,3 +131,54 @@ function buildNewRow(oldRowID){
     RowPlace.appendChild(newRow);
     return newRowID;
 }
+
+function findPercentage(anyRecord){
+    let percentOfTotalDays = Math.floor(((anyRecord / lengths.length) * 100));
+    return percentOfTotalDays;
+}
+
+/* to be deleted.  for development purposes */
+function printPercentages() {
+    let totalAmraps = 0; 
+    let totalForTime = 0;
+    let lengthOfWodLong = 0;
+    let lengthOfWodMedium = 0;
+    let lengthOfWodFuck = 0;
+    let lengthOfWodShort = 0;
+    let lengthOfWodSprint = 0;
+    let lengthOfWodHeavy = 0;
+     for (let i = 0; i < workOutOfTheDay.length; i++){
+        if(workOutOfTheDay[i].priority === 'AMRAP'){
+            totalAmraps ++;
+        }else{
+            totalForTime ++;
+        }
+    }
+     for (let j = 0; j < workOutOfTheDay.length; j++) {
+        if (workOutOfTheDay[j].time === 'heavy') {
+            lengthOfWodHeavy++;
+        } else if(workOutOfTheDay[j].time === 'sprint'){
+            lengthOfWodSprint ++;
+        } else if(workOutOfTheDay[j].time === 'short'){
+            lengthOfWodShort ++;
+        } else if(workOutOfTheDay[j].time === 'medium'){
+            lengthOfWodMedium ++;
+        } else if(workOutOfTheDay[j].time === 'long'){
+            lengthOfWodLong ++;
+        } else {
+            lengthOfWodFuck ++;
+        }
+           
+    } 
+    lengthOfWodFuck = findPercentage(lengthOfWodFuck);
+    lengthOfWodHeavy = findPercentage(lengthOfWodHeavy);
+    lengthOfWodSprint = findPercentage(lengthOfWodSprint);
+    lengthOfWodShort = findPercentage(lengthOfWodShort);
+    lengthOfWodMedium = findPercentage(lengthOfWodMedium);
+    lengthOfWodLong = findPercentage(lengthOfWodLong);
+    var percentages = document.getElementById("percentages");
+    percentages.innerHTML = "Amraps: " + totalAmraps + '<br>For Time: ' + totalForTime;
+    percentages.innerHTML += "<br>heavy: " + lengthOfWodHeavy + " Sprint: " + lengthOfWodSprint + "<br>Short: " + lengthOfWodShort + " Medium: " + lengthOfWodMedium + "<br> Long: " + lengthOfWodLong + " fuck: " + lengthOfWodFuck;
+
+}
+
