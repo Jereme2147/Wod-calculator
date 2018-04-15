@@ -46,15 +46,17 @@ function putDayNumbers(){
     for (var i = 0; i < lengths.length; i++) {
         workOutOfTheDay.push({ 'day': i + 1 });
     }
-    putObject('time');
+    putObject('time', lengths);
+    schemeInsert();
 }
     /* puts time frames into the array */
-function putObject(newInfo) {
+function putObject(newInfo, newArray) {
     for (var i = 0; i < lengths.length; i++) {
-        workOutOfTheDay[i][newInfo] = lengths[i];
+        workOutOfTheDay[i][newInfo] = newArray[i];
     }
-    priority();
-    printWods(workOutOfTheDay);
+    return;
+    /* priority();
+    printWods(workOutOfTheDay); */
 }
 
 /* will run until amrap vs for time is within 10%  */
@@ -105,6 +107,7 @@ function printWods(workout) {
         blockDiv.innerHTML += "Day: " + workout[i].day;
         blockDiv.innerHTML += "<br>Time frame: " + workout[i].time;
         blockDiv.innerHTML += "<br>Workout Priority: " + workOutOfTheDay[i].priority;
+        blockDiv.innerHTML += "<br>Scheme: " + workOutOfTheDay[i].scheme;
         i++;
         }
         rowID = buildNewRow(rowID);
@@ -136,6 +139,36 @@ function findPercentage(anyRecord){
     let percentOfTotalDays = Math.floor(((anyRecord / lengths.length) * 100));
     return percentOfTotalDays;
 }
+/* adds in scheme single couplet triplet chipper */
+
+ function schemeInsert() {
+     let scheme = [];
+    for (var l = 0; l < lengths.length; l++) {
+        scheme.push(Math.floor((Math.random() * 100) + 1)); /* random numbers for each dayt */
+     }
+    for (var i = 0; i < lengths.length; i++) {
+
+        if (scheme[i] > 0 && scheme[i] < 5) {
+            scheme[i] = 'single';
+
+        } else if (scheme[i] > 4 && scheme[i] < 40) {
+            scheme[i] = 'couplet';
+
+        } else if (scheme[i] > 39 && scheme[i] < 75) {
+            scheme[i] = 'triplet';
+
+        } else if (scheme[i] > 74 && scheme[i] < 100) {
+            scheme[i] = 'Chipper 4+';
+
+        } else {
+            scheme[i] = 'fuck if I know';
+        }
+    }
+    putObject('scheme', scheme);
+    priority();
+    printWods(workOutOfTheDay);
+}
+
 
 /* to be deleted.  for development purposes */
 function printPercentages() {
@@ -147,6 +180,13 @@ function printPercentages() {
     let lengthOfWodShort = 0;
     let lengthOfWodSprint = 0;
     let lengthOfWodHeavy = 0;
+    let schemeSingle = 0;
+    let schemeCouplet = 0;
+    let schemeTriplet = 0;
+    let schemeChipper = 0;
+    let schemeDunno = 0;
+    
+
      for (let i = 0; i < workOutOfTheDay.length; i++){
         if(workOutOfTheDay[i].priority === 'AMRAP'){
             totalAmraps ++;
@@ -170,15 +210,36 @@ function printPercentages() {
         }
            
     } 
+    for (let b = 0; b < workOutOfTheDay.length; b++) {
+        if (workOutOfTheDay[b].scheme === 'single') {
+            schemeSingle++;
+        } else if (workOutOfTheDay[b].scheme === 'couplet') {
+            schemeCouplet++;
+        } else if (workOutOfTheDay[b].scheme === 'triplet') {
+            schemeTriplet++;
+        } else if (workOutOfTheDay[b].scheme === 'Chipper 4+') {
+            schemeChipper++;
+        } else {
+            schemeDunno++;
+        }
+
+    } 
     lengthOfWodFuck = findPercentage(lengthOfWodFuck);
     lengthOfWodHeavy = findPercentage(lengthOfWodHeavy);
     lengthOfWodSprint = findPercentage(lengthOfWodSprint);
     lengthOfWodShort = findPercentage(lengthOfWodShort);
     lengthOfWodMedium = findPercentage(lengthOfWodMedium);
-    lengthOfWodLong = findPercentage(lengthOfWodLong);
+    schemeSingle = findPercentage(schemeSingle);
+    schemeCouplet = findPercentage(schemeCouplet);
+    schemeTriplet = findPercentage(schemeTriplet);
+    schemeChipper = findPercentage(schemeChipper);
+    schemeDunno = findPercentage(schemeDunno);
+    
     var percentages = document.getElementById("percentages");
     percentages.innerHTML = "Amraps: " + totalAmraps + '<br>For Time: ' + totalForTime;
     percentages.innerHTML += "<br>heavy: " + lengthOfWodHeavy + " Sprint: " + lengthOfWodSprint + "<br>Short: " + lengthOfWodShort + " Medium: " + lengthOfWodMedium + "<br> Long: " + lengthOfWodLong + " fuck: " + lengthOfWodFuck;
-
+    percentages.innerHTML += "<br>Single: " + schemeSingle + "  Couplet:  " + schemeCouplet;
+    percentages.innerHTML += "<br>Triplet:  " + schemeTriplet + "  Chipper:  " + schemeChipper;
+    percentages.innerHTML += "<br>Fuck if I know: " + schemeDunno; 
 }
 
