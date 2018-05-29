@@ -241,5 +241,7 @@ function printPercentages() {
     percentages.innerHTML += "<br>Single: " + schemeSingle + "  Couplet:  " + schemeCouplet;
     percentages.innerHTML += "<br>Triplet:  " + schemeTriplet + "  Chipper:  " + schemeChipper;
     percentages.innerHTML += "<br>Fuck if I know: " + schemeDunno; 
+
+    console.table(workOutOfTheDay);
 }
 
