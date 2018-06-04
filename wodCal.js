@@ -1,15 +1,16 @@
+"use strict";
 let wods = [];
-
 
 // adds objects based on the number of days you want to create to wods ARR
 function createDays(days){
-    var Day = function () {
-        this.day = 0;
-        this.priority = 'priority';
-        this.time = 'time';
-        this.repCount = 'rep count';
+    
+    let Day = function () {
+        this.day = 0,
+        this.priority = 'priority',
+        this.time = 'time',
+        this.repCount = 'rep count'
     };
-    for(i = 0; i < days; i++){
+    for(let i = 0; i < days; i++){
         wods.push(new Day);
         wods[i].day = i+1;
     }
@@ -45,6 +46,9 @@ function generatePriority(){
 //Sets the wod lengths. 
 function timeFrame(){
     let wodRandom = [];
+    let heavy1 = 0, sprint1 = 0;
+    let short1 = 0, medium1 = 0;
+    let long1 = 0, damn1 = 0;
     for(let i = 0; i < 100; i++){
         if(i < 7){
             wodRandom.push('Heavy Day');
@@ -65,8 +69,27 @@ function timeFrame(){
     wodRandom = shuffle(wodRandom);
      for(let j = 0; j < wods.length; j++){
         wods[j].time = wodRandom.shift();
+         if (wods[j].time == 'Heavy Day'){
+             heavy1 ++;
+         }else if(wods[j].time == 'Sprint < 5m'){
+             sprint1++;
+         }else if(wods[j].time == 'Short 5 - 10m'){
+             short1 ++;
+         }else if(wods[j].time == 'Medium 10 - 18m'){
+             medium1 ++;
+         }else if(wods[j].time == 'Long 18 - 25m'){
+             long1 ++;
+         }else if(wods[j].time == 'This will hurt'){
+             damn1 ++;
+         }
     } 
     checkRepeat('time', 2);
+    testPercentages(heavy1, 'Heavy');
+    testPercentages(sprint1, 'Sprint');
+    testPercentages(short1, 'Short');
+    testPercentages(medium1, 'Medium');
+    testPercentages(long1, 'Long');
+    testPercentages(damn1, 'Damn');  
 }
 function randomNumber(num){
     return (Math.floor(Math.random()*num));
@@ -102,9 +125,8 @@ function checkRepeat(key, maxConsec){
             let tempKey = randomNumber(wods.length);
             wods[i][key] = wods[tempKey][key];
             wods[tempKey][key] = temp;
-            i--;
+            i = 2;
         }
-        console.log(wods[i][key]);
     }
 }
 function generateRepCount(){
@@ -140,10 +162,32 @@ function generateRepCount(){
     makeAdustments(repArr);
     checkRepeat('repCount', 3);
 }
-
+function addStrength(){
+    for(let i = 0; i < wods.length; i++){
+        if(wods[i].time == 'Sprint < 5m' 
+        || wods[i].time == 'Short 5 - 10m'){
+            wods[i].strength = 'Strength';
+        };
+        if(wods[i].time == 'Medium 10 - 18m' && i > 0){
+            if(wods[i-1].strength == 'Strength'){
+                continue;
+            }else {
+                wods[i].strength = 'Strength';
+            }
+        }
+    }
+}
+function testPercentages(itemCount, item){
+    $(document).ready(function(){
+        let itemCountNum = (itemCount / wods.length) * 100;
+         $("#main").append(`<div>${item} ${itemCountNum}%</div>`);
+    })
+   
+}
 //all for testing purposes.
 createDays(20);
 generatePriority();
 timeFrame();
 generateRepCount();
+addStrength();
 console.table(wods);
