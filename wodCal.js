@@ -19,8 +19,8 @@ function createDays(days) {
 function createKey(arr, key, arrayObjs) {
     for (let keys in arrayObjs) {
         arrayObjs[keys][key] = arr[keys];
-    }
-}
+    };
+};
 // adds For Time or AMRAP for each day
 function generatePriority(arr) {
     let evens = 0;
@@ -67,10 +67,11 @@ function timeFrame(){
     wodRandom.push(...(populateArrayPercent(heavy, .05)));
     wodRandom.push(...(populateArrayPercent(sprint, .10)));
     wodRandom.push(...(populateArrayPercent(short, .20)));
-    wodRandom.push(...(populateArrayPercent(medium, .50)));
-    wodRandom.push(...(populateArrayPercent(long, .10)));
+    wodRandom.push(...(populateArrayPercent(medium, .40)));
+    wodRandom.push(...(populateArrayPercent(long, .20)));
     wodRandom.push(...(populateArrayPercent(damn, .05)));
     wodRandom = shuffleArr(wodRandom);
+    wodRandom = checkRepeat(wodRandom, 3);
     return wodRandom; 
     // for(let i = 0; i < wods.length; i++){
     //     wods[i].time = wodRandom[i];
@@ -134,48 +135,64 @@ function generateRepCount(arr){
     repArr = [...low , ...med, ...high];
     repArr = shuffleArr(repArr);
     repArr = checkRepeat(repArr, 3);
-    //this isn't working just yet.
-    repArr.forEach(function(a){
-        if(tempArr[repArr.indexOf(a)].time == 'Heavy Day'){
-            repArr[repArr.indexOf(a)] = 'fuck me it worded';
-        }
-    })
-
-    /* function makeAdustments(arr){
-        let repHolder;
-        for(let i = 0; i < days; i++){
-            if (tempArr[i].time == 'Long 18 - 25m' && arr[i] == 'Low Reps < 50'){
-                tempArr[i].repCount = 'High Reps 100+';
-            } else if(tempArr[i].time == 'Heavy Day'){
-                tempArr[i].repCount = 'N/A';
-            } else{
-              tempArr[i].repCount = arr[i];
-            }
-        }
-    } */
-    /* for(let things in repArr){
-        tempArr[things].repCount = repArr[things];
-        console.log(repArr[things]);
-    } */
-    //makeAdustments(repArr);
-    //checkRepeat('repCount', 3);
-    return repArr;
-}
-function addStrength(){
-    for(let i = 0; i < wods.length; i++){
-        if(wods[i].time == 'Sprint < 5m' 
-        || wods[i].time == 'Short 5 - 10m'){
-            wods[i].strength = 'Strength';
-        };
-        if(wods[i].time == 'Medium 10 - 18m' && i > 0){
-            if(wods[i-1].strength == 'Strength'){
-                continue;
-            }else {
-                wods[i].strength = 'Strength';
-            }
+    for(let i = 0; i < tempArr.length; i++){
+        switch(tempArr[i].time){
+            case 'Heavy Day': 
+                repArr[i] = 'n/a';
+                break;
+            case 'Long 18 - 25m':
+                repArr[i] = 'High reps 100+'
+                break;
         }
     }
+    /* for(let i = 0; i < tempArr.length; i++){
+         if (tempArr[i].time == 'Heavy Day') {
+             repArr[i] = 'n/a';
+         } else if (tempArr[i].time == 'Long 18 - 25m' && repArr[i] == 'Low Reps < 50'){
+             repArr[i] = 'High Reps 100+';
+         }
+    } */
+   
+    
+    return repArr;
 }
+function addStrength(arr){
+    let strengthArr = [...arr];
+    let strength = [];
+    let sCount = 0;
+    let heavy = 'Heavy Day',
+        sprint = 'Sprint < 5m',
+        short = 'Short 5 - 10m',
+        medium = 'Medium 10 - 18m',
+        long = 'Long 18 - 25m',
+        damn = 'This will hurt';
+    for (let i = 0; i < strengthArr.length; i++){
+        if(strengthArr[i].time == short ||
+            strengthArr[i].time == sprint){
+            if(sCount < 3 && strength[i-1] != 'strength'){
+                strength[i] = 'strength';
+                sCount ++;
+                }else {
+                    strength[i]= 'gymnastic test';
+                    sCount = 0; 
+                }
+         } else if(strengthArr[i].time == medium && sCount < 2){
+                strength[i] = 'strength';
+                sCount++;
+            } else if (strengthArr[i].time == heavy || strengthArr[i].time == long){
+                strength[i]= 'N/A';
+                sCount = 0;
+            } else {
+                if(strengthArr[i].time == medium && sCount < 2){
+                    strength[i] = 'strength';
+                }else{
+                    strength[i] = 'Just wod';
+                }
+            }
+    }
+    return strength;
+}
+    
 // take item and % required return array with that number of entries
 //takes length, finds the % and returns that many of that item.
 //% should be sent as .6 = 60% .5 = 50%
@@ -223,5 +240,6 @@ createKey(generatePriority(wods), 'priority', wods);
 createKey(timeFrame(), 'time', wods);
 //generateRepCount();
 createKey(generateRepCount(wods), 'repCount', wods);
-addStrength();
+createKey(addStrength(wods), 'strength', wods);
+//addStrength();
 console.table(wods);
