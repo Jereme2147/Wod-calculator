@@ -141,7 +141,7 @@ function generateRepCount(arr){
                 repArr[i] = 'n/a';
                 break;
             case 'Long 18 - 25m':
-                repArr[i] = 'High reps 100+'
+                repArr[i] = 'High reps 100+';
                 break;
         }
     }
@@ -234,7 +234,7 @@ function shuffleArr(arr) {
     }
 } */
 //all for testing purposes.
-let wods = createDays(20); //20 will be "days".
+let wods = createDays(12); //20 will be "days".
 //printWods();
 createKey(generatePriority(wods), 'priority', wods);
 createKey(timeFrame(), 'time', wods);
