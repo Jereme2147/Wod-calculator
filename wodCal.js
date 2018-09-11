@@ -1,25 +1,26 @@
 'use strict'
-
+let wods;
 //  returns Arr filled with "days" number of Days
 function createDays (days) {
-  let createArr = []
+  let createArr = [];
   let Day = function () {
     this.day = 0,
     this.priority = 'priority',
     this.time = 'time',
     this.repCount = 'rep count'
-  }
+  };
   for (let i = 0; i < days; i++) {
     createArr.push(new Day())
-        createArr[i].day = i + 1
+    createArr[i].day = i + 1
     }
-  return createArr
+  return createArr;
 }
 // takes arr of information with a key, inserts into global
 function createKey (arr, key, arrayObjs) {
   for (let keys in arrayObjs) {
     arrayObjs[keys][key] = arr[keys]
     };
+    return arrayObjs;
 };
 // adds For Time or AMRAP for each day
 function generatePriority (arr) {
@@ -135,57 +136,39 @@ function checkRepeat (arr, maxConsec) {
   return arr
 }
 function generateRepCount (arr) {
-  let tempArr = [...arr]
-    let days = wods.length
-    let repArr = []
-    let low = populateArrayPercent('Low Reps < 50', 0.08)
-    let med = populateArrayPercent('Med Reps 50 - 100', 0.4)
-    let high = populateArrayPercent('High Reps 100+', 0.62)
-    repArr = [...low, ...med, ...high]
-    repArr = shuffleArr(repArr)
-    repArr = checkRepeat(repArr, 3)
-    for (let i = 0; i < tempArr.length; i++) {
-    switch (tempArr[i].time) {
-      case 'Heavy Day':
-        repArr[i] = 'n/a'
+  let tempArr = [...arr];
+  let days = wods.length;
+  let repArr = [];
+  let low = populateArrayPercent('Low Reps < 50', 0.08);
+  let med = populateArrayPercent('Med Reps 50 - 100', 0.4);
+  let high = populateArrayPercent('High Reps 100+', 0.62);
+  repArr = [...low, ...med, ...high];
+  repArr = shuffleArr(repArr);
+  repArr = checkRepeat(repArr, 3);
+    
+  for (let i = 0; i < tempArr.length; i++) {
+      switch (tempArr[i].time) {
+        case 'Heavy Day':
+          repArr[i] = 'n/a'
                 break;
-      case 'Long 18 - 25m':
-        repArr[i] = 'High reps 100+'
+        case 'Long 18 - 25m':
+          repArr[i] = 'High reps 100+'
                 break;
-    }
-  }
-  /* for(let i = 0; i < tempArr.length; i++){
-         if (tempArr[i].time == 'Heavy Day') {
-             repArr[i] = 'n/a';
-         } else if (tempArr[i].time == 'Long 18 - 25m' && repArr[i] == 'Low Reps < 50'){
-             repArr[i] = 'High Reps 100+';
-         }
-    } */
-
-
-  return repArr
+    };
+  };
+  return repArr;
 }
 function addStrength (arr) {
   let strengthArr = [...arr]
-    let strength = []
-    let sCount = 0
-    let heavy = 'Heavy Day';
-
-        
-let sprint = 'Sprint < 5m';
-
-        
-let short = 'Short 5 - 10m';
-
-        
-let medium = 'Medium 10 - 18m';
-
-        
-let long = 'Long 18 - 25m';
-
-        
-let damn = 'This will hurt'
-    for (let i = 0; i < strengthArr.length; i++) {
+  let strength = []
+  let sCount = 0
+  let heavy = 'Heavy Day';   
+  let sprint = 'Sprint < 5m';
+  let short = 'Short 5 - 10m';
+  let medium = 'Medium 10 - 18m';
+  let long = 'Long 18 - 25m';
+  let damn = 'This will hurt'
+  for (let i = 0; i < strengthArr.length; i++) {
     if (strengthArr[i].time == short ||
             strengthArr[i].time == sprint) {
       if (sCount < 3 && strength[i - 1] != 'strength') {
@@ -208,8 +191,8 @@ let damn = 'This will hurt'
         strength[i] = 'Just wod'
                 }
     }
-  }
-  return strength
+  };
+  return strength;
 }
 
 // take item and % required return array with that number of entries
@@ -219,46 +202,49 @@ function populateArrayPercent (item, percent) {
   let arr = []
     let num = wods.length * percent
     for (let i = 0; i < num; i++) {
-    arr.push(item)
+    arr.push(item);
     }
-  return arr
+  return arr;
 }
 // sent array, return random shuffle.
 function shuffleArr (arr) {
   let i = 0,
-             j = 0,
-             temp = null
+      j = 0,
+      temp = null;
 
   for (i = arr.length - 1; i > 0; i -= 1) {
-    j = Math.round(Math.random() * (i + 1))
-    temp = arr[i]
-    arr[i] = arr[j]
-    arr[j] = temp
+    j = Math.round(Math.random() * (i + 1));
+    temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
   }
-  return arr
+  return arr;
 
-}
+};
+function printWods(){
+  $("#content").empty();
+  for (let i = 0; i < wods.length; i++){
+    $("#content").append(
+      `<div class="wodBlocks">
+          <p>Day ${wods[i].day}</p>
+          <p>Priority: ${wods[i].priority}</p>
+          <p>Time Frame: ${wods[i].time}</p>
+          <p>Rep Range: ${wods[i].repCount}</p>
+          <p>Strength/gymnastics: ${wods[i].strength}</p>      
+      </div>`);
+  };
+};
 
-/* function testPercentages(itemCount, item){
-    $(document).ready(function(){
-        let itemCountNum = (itemCount / wods.length) * 100;
-         $("#main").append(`<div>${item} ${itemCountNum}%</div>`);
-    })
+//getting the number of days from the user.
+function formChanged() {
+  let days = document.getElementsByName("days")[0].value;
+  event.preventDefault();
+  wods = createDays(days);
+  createKey(generatePriority(wods), 'priority', wods);
+  createKey(timeFrame(), 'time', wods);
+  createKey(generateRepCount(wods), 'repCount', wods);
+  createKey(addStrength(wods), 'strength', wods);
+  console.table(wods);
+  printWods();
+};
 
-}  */
-/* function printWods(){
-    for(let keys of wods){
-        console.log('the fuck');
-
-    }
-} */
-// all for testing purposes.
-let wods = createDays(12) //20 will be "days".
-//printWods();
-createKey(generatePriority(wods), 'priority', wods)
-createKey(timeFrame(), 'time', wods)
-//generateRepCount();
-createKey(generateRepCount(wods), 'repCount', wods)
-createKey(addStrength(wods), 'strength', wods)
-//addStrength();
-console.table(wods)
