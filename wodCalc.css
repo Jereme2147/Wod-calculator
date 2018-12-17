@@ -1,8 +1,37 @@
-.main{
-                width: 45%;
-                height: 700px;
-                margin-top: 10%;
-                box-shadow: 5px 5px 5px black;
-                border-radius: 5px;
-                background-color: bisque;
-            }
+body {
+    background-color: #353535;
+}
+#container {
+    display: flex-column;
+    background-color: #353535;
+}
+#content {
+    display: flex; 
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+#days {
+    font-size: 3vh;
+    text-align: center;
+    padding: 1vh;
+}
+#topBar {
+    width: 100%;
+    background-color: rgba(234, 234, 234, 1);
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-content: center;
+}
+.wodBlocks {
+    border-style: solid;
+    padding: 10px;
+    margin: 10px 0px;
+    /* width: 350px; */
+    color: #545454;
+    border-color: rgba(255, 13, 20, 1);
+    background-color: #EAEAEA;
+}
+.wodBlocks p {
+    font-size: 15px;
+}

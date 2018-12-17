@@ -84,17 +84,6 @@ let damn = 'This will hurt'
     wodRandom = shuffleArr(wodRandom)
     wodRandom = checkRepeat(wodRandom, 3)
     return wodRandom 
-    // for(let i = 0; i < wods.length; i++){
-    //     wods[i].time = wodRandom[i];
-    // }
-
-    //checkRepeat('time', 2);
-    // testPercentages(heavy1, 'Heavy');
-    // testPercentages(sprint1, 'Sprint');
-    // testPercentages(short1, 'Short');
-    // testPercentages(medium1, 'Medium');
-    // testPercentages(long1, 'Long');
-    // testPercentages(damn1, 'Damn');  
 }
 // returns random number between 0 and num
 function randomNumber (num) {
@@ -221,16 +210,71 @@ function shuffleArr (arr) {
   return arr;
 
 };
+function scheme(arr){
+  let tempArr = [...arr];
+  let days = wods.length;
+  let low = 'Low Reps < 50', med = 'Med Reps 50 - 100', high = 'High Reps 100+';
+  let one = 'Single movment', two = 'Couplet', three = 'Triplet';
+  let four = 'Chipper > 4 movemnts';
+  let single = populateArrayPercent(one, .1);
+  let couplet = populateArrayPercent(two, .3);
+  let triplet = populateArrayPercent(three, .35);
+  let chipper = populateArrayPercent(four, .25);
+  let schemeArr = [...single, ...couplet, ...triplet,
+                  ...chipper];
+  schemeArr = shuffleArr(schemeArr);
+  schemeArr = checkRepeat(schemeArr, 3);
+  let arr2 = [];
+  let count = 0;
+  for (let i = 0; i < schemeArr.length; i++){
+    while(check(i) == true){
+      console.log('Here');
+      let temp = schemeArr.splice(i, 1);
+      schemeArr.push(temp);
+    };
+    arr2.push(schemeArr[i]);
+  }
+  console.table(tempArr);
+  function check(index){
+    //console.log(tempArr[index]);
+    if (tempArr[index].repCount === high && schemeArr[index] === one) {
+      console.log('return true');
+      return true;
+    } else {
+      //console.log('return false');
+      return false; 
+    };
+  };
+
+  /* while (schemeArr.length > 0){
+    if (schemeArr[count] == one && tempArr[count].repCount == high){
+      count++;
+      continue;
+      // seems to work until here...
+    }else if (schemeArr[count] == four && tempArr[count].repCount == low) {
+      count++;
+      continue;
+    }else {
+      arr2.push(schemeArr[count]);
+      schemeArr.shift();
+      count = 0;
+      }
+  }
+ */
+
+  return arr2;
+};
 function printWods(){
   $("#content").empty();
   for (let i = 0; i < wods.length; i++){
     $("#content").append(
       `<div class="wodBlocks">
-          <p>Day ${wods[i].day}</p>
-          <p>Priority: ${wods[i].priority}</p>
-          <p>Time Frame: ${wods[i].time}</p>
-          <p>Rep Range: ${wods[i].repCount}</p>
-          <p>Strength/gymnastics: ${wods[i].strength}</p>      
+          <p>Day ${wods[i].day}<br>
+          Priority: ${wods[i].priority}<br>
+          Time Frame: ${wods[i].time}<br>
+          Rep Range: ${wods[i].repCount}<br>
+          Strength/gymnastics: ${wods[i].strength}<br> 
+          Scheme: ${wods[i].scheme}</p>     
       </div>`);
   };
 };
@@ -244,6 +288,7 @@ function formChanged() {
   createKey(timeFrame(), 'time', wods);
   createKey(generateRepCount(wods), 'repCount', wods);
   createKey(addStrength(wods), 'strength', wods);
+  createKey(scheme(wods), 'scheme', wods);
   console.table(wods);
   printWods();
 };

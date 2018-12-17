@@ -1,0 +1,33 @@
+{
+  "name": "wodcalc",
+  "version": "1.0.0",
+  "description": "workout framework creator",
+  "main": "wodCalc.js",
+  "scripts": {
+    "test": "randomNumber(20)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jereme2147/Wod-calculator.git"
+  },
+  "keywords": [
+    "workout"
+  ],
+  "author": "Jereme Daniels",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jereme2147/Wod-calculator/issues"
+  },
+  "homepage": "https://github.com/Jereme2147/Wod-calculator#readme",
+  "dependencies": {
+    "eslint": "^5.0.1"
+  },
+  "devDependencies": {
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0"
+  }
+}
